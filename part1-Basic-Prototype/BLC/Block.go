@@ -23,11 +23,11 @@ type Block struct {
 
 func (block *Block) SetHash() {
 	//1.height转换为字节数组[]byte
-	heightBytes := IntToHed(block.Height)
+	heightBytes := IntToHex(block.Height)
 
 	//2.时间戳转换为字节数组[]byte
 	timeString := strconv.FormatInt(block.Timestamp, 2)
-	timeBytes := []byte(timeString  )
+	timeBytes := []byte(timeString)
 	//3.拼接所有得属性
 	blockBytes := bytes.Join([][]byte{heightBytes, block.PrevBlockHash, block.Data, timeBytes, block.Hash}, []byte{})
 	//4.生成Hash

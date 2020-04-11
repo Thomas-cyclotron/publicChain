@@ -1,6 +1,7 @@
 package BLC
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -22,7 +23,7 @@ type Block struct {
 
 //func (block *Block) SetHash() {
 //	//1.height转换为字节数组[]byte
-//	heightBytes := IntToHex(block.Height)
+//	heightBytes := IntToHed(block.Height)
 //
 //	//2.时间戳转换为字节数组[]byte
 //	timeString := strconv.FormatInt(block.Timestamp, 2)
@@ -53,9 +54,12 @@ func NewBlock(data string, height int64, prevBlockHash []byte) *Block {
 	//block.SetHash()
 	//调用工作量证明得方法并且返回有效得Hash和Nonce值
 	pow := NewProofOfWork(block)
+
+	//挖矿验证
 	hash, nonce := pow.Run()
 	block.Hash = hash
 	block.Nonce = nonce
+	fmt.Println()
 	return block
 }
 
