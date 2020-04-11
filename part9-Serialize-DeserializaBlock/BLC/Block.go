@@ -1,7 +1,10 @@
 package BLC
 
 import (
+	"bytes"
+	"encoding/gob"
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -36,6 +39,28 @@ type Block struct {
 //	//sha256 返回得是一个32字节得数组 需要转换一下
 //	block.Hash = hash[:]
 //}
+//将区块对象序列化 成字节数组
+func (block *Block) Serialize() []byte {
+	var result bytes.Buffer
+	encoder := gob.NewEncoder(&result)
+
+	err := encoder.Encode(block)
+	if err != nil {
+		log.Panic(err)
+	}
+	return result.Bytes()
+}
+
+//反序列化
+func DeserializeBlock(blockBytes []byte) *Block {
+	var block Block
+	decoder := gob.NewDecoder(bytes.NewReader(blockBytes))
+	err := decoder.Decode(&block)
+	if err != nil {
+		log.Panic(err)
+	}
+	return &block
+}
 
 //1.创建新得区块
 func NewBlock(data string, height int64, prevBlockHash []byte) *Block {
