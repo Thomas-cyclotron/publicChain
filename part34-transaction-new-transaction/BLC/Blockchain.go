@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -254,8 +255,17 @@ func (blockchain *BlockChain) MineNewBlock(from []string, to []string, amount []
 	fmt.Println(to)
 	fmt.Println(amount)
 
+	//./bc send -from '["d"]' -to '["e"]' -amount '["2"]'
+	//[d]
+	//[e]
+	//[2]
+	//1.建立一笔交易
+	value, _ := strconv.Atoi(amount[0])
+	tx := NewSimpleTransaction(from[0], to[0], value)
+
 	//1.通过相关算法 建立Transaction数组
 	var txs []*Transaction
+	txs = append(txs, tx)
 
 	var block *Block
 	blockchain.DB.View(func(tx *bolt.Tx) error {
